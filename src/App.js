@@ -62,6 +62,7 @@ class App extends Component {
       return; 
     } else { 
       
+      // async fetch to disable double submition
       fetch('https://webhook.site/bdf2b2f6-c540-4b0b-b424-2a99f5e3b66f', {
         method: 'POST',
         mode: 'no-cors',
@@ -69,10 +70,15 @@ class App extends Component {
       })
       .then(data => {
         console.log('Success:', data);
+        // confirm to client
+
+        //clear form for another submission
         
       })
       .catch(error => {
         console.error('Error:', error);
+
+        // something went wrong, please refresh the page
       });
     }
   }

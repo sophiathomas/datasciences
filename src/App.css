@@ -23,7 +23,56 @@
   to { transform: rotate(360deg); }
 }
 
+/* Form styles */
+body {
+  
+  color: black;
+}
 
-input[type=text].error {
+form {
+  background-color: rgb(232, 218, 239);
+  display: flex;
+  margin: 100px;
+  flex-flow: column wrap;
+  padding: 40px;
+  border: solid 1px black;
+}
+
+label {
+  display: block;
+  margin-bottom: 20px;
+}
+
+input[type=text],
+input[type=email] {
+  display: block;
+  width: 100%;
+}
+
+input[type=text].error,
+input[type=email].error {
   border: red solid 1px;
 }
+
+input[type=submit] {
+ padding: 10px;
+ border: black 1px solid;
+ background-color:  rgb(232, 218, 239);
+}
+
+input[type=submit]:hover {
+  background-color: rgb(175, 122, 197);
+  cursor: pointer;
+  color: white;
+}
+
+
+label > input[type=checkbox] {
+  cursor: pointer;
+}
+
+
+
+
+
+
