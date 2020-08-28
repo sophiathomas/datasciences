@@ -5,7 +5,16 @@ import validate from 'validate.js';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = this.getInitialState();
+
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.getInitialState = this.getInitialState.bind(this);
+  }
+
+  getInitialState = () => {
+    return {
       inputs: {
         name: '',
         email: '',
@@ -13,13 +22,8 @@ class App extends Component {
         consent: false,
       }
     };
-
-    this.handleTextChange = this.handleTextChange.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.displayErrors = this.displayErrors.bind(this);
   }
-
+  
   handleTextChange = event => {
     const name = event.target.name;
     const value = event.target.value;
@@ -70,20 +74,31 @@ class App extends Component {
       })
       .then(data => {
         console.log('Success:', data);
-        // confirm to client
 
-        //clear form for another submission
+        // confirm to client
+        document.getElementById('signup').value = "Thanks for signing up";
         
       })
       .catch(error => {
         console.error('Error:', error);
 
         // something went wrong, please refresh the page
+        document.getElementById('signup').value = "A problem occurred, please try again";
+      })
+      .finally( () => {
+        setTimeout(this.resetForm, 2000);
       });
     }
   }
 
-  displayErrors(errors){}
+  displayErrors = errors => {
+    // todo ^^
+  }
+
+  resetForm = () => {
+    document.getElementById('signup').value = "Submit";
+    this.setState(this.getInitialState());
+  }
 
   render() {
     return (
@@ -104,7 +119,7 @@ class App extends Component {
           <input type="checkbox" name="consent" value={this.state.inputs.consent} onChange={this.handleCheckboxChange} required />
            I have read and agreed to the terms and conditions.
         </label>
-        <input type="submit" value="Submit" />
+        <input type="submit" id="signup" value="Submit" />
       </form>
     );
   }

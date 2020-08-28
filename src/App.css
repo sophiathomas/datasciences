@@ -36,6 +36,7 @@ form {
   flex-flow: column wrap;
   padding: 40px;
   border: solid 1px black;
+  max-width: 60ch;
 }
 
 label {
