@@ -81,13 +81,20 @@ class App extends Component {
 
     if(isValid) {
       const info = this.state.data;
-      alert(JSON.stringify(info));
+      const payload = JSON.stringify(info);
+
+      const endpoint = "https://webhook.site/bdf2b2f6-c540-4b0b-b424-2a99f5e3b66f";
+      const proxy = "https://cors-anywhere.herokuapp.com/";
+      const query = proxy + endpoint;
 
       // async fetch to disable double submition
-      fetch("https://webhook.site/bdf2b2f6-c540-4b0b-b424-2a99f5e3b66f", {
+      fetch(query, {
         method: "POST",
         mode: "cors",
-        body: info,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: payload,
       })
       .then(function(response) {
         return response.text();
