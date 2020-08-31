@@ -30,7 +30,8 @@ class App extends Component {
           value: "Submit",
         }
       },
-      errors: false
+      errors: false,
+      mode: false
     };
   }
 
@@ -87,7 +88,6 @@ class App extends Component {
       const proxy = "https://cors-anywhere.herokuapp.com/";
       const query = proxy + endpoint;
 
-      // async fetch to disable double submition
       fetch(query, {
         method: "POST",
         mode: "cors",
@@ -101,71 +101,81 @@ class App extends Component {
       })
       .then(data => {
         console.log("Success:", data);
-
-        // confirm to client
         // @TODO: Update the div form to display a nice confirmation
-        this.setState({
-          inputs: {
-            ...this.state.inputs, "submit": { value: "Thanks for signing up"}
-          }
-        });
+        this.setState({mode: "Success"});
         
       })
       .catch(error => {
         console.error("Error:", error);
 
         // something went wrong
-        this.setState({
-          inputs: {
-            ...this.state.inputs, "submit": { value: "A problem occurred, please try again"}
-          }
-        });
+        this.setState({mode: "Error"});
       })
       .finally( () => {
-        setTimeout(this.resetForm, 3000);
+        setTimeout(this.resetForm, 5000);
       });
     }
   }
 
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input className={this.state.errors.name ? 'error': null} type="text" name="name" value={this.state.data.name} onChange={this.handleTextChange} required />
-        </label>
-        {this.state.errors.name && 
-          this.state.errors.name.map((message, index, array) => {
-            return <span key={index}>{message}</span>;
-          })
-        }
-       
-        <label>
-          Email:
-          <input className={this.state.errors.email ? 'error': null} type="email" name="email" value={this.state.data.email} onChange={this.handleTextChange} required />
-        </label>
-        {this.state.errors.email && 
-          this.state.errors.email.map((message, index, array) => {
-            return <span key={index}>{message}</span>;
-          })
-        }
+  render() { 
+    if(this.state.mode === "Success") { 
+      return (<div>Sucess!</div>);
+    } else if(this.state.mode === "Error") {
+      return (
+        <div></div>
+      );
+    } else {
+      return (
+        <form className="form" onSubmit={this.handleSubmit}>
+          <div className="form__group">
+            <label htmlFor="name" className="form__label">Name</label>
+              <input id="name" type="text" name="name" placeholder="e.g. Neil Peart" className={"form__field" + (this.state.errors.name ? " error": "")}  value={this.state.data.name} onChange={this.handleTextChange} />
+          
+            {this.state.errors.name && 
+              <ul className="form__field__error-msg">
+                {this.state.errors.name.map((message, index, array) => {
+                  return <li key={index}>{message}</li>;
+                })}
+              </ul>
+            }
+          </div>
+        
+          <div className="form__group">
+            <label htmlFor="email" className="form__label">Email</label>
+            <input id="email" type="email" name="email" placeholder="e.g. hello@example.com" className={"form__field" + (this.state.errors.email ? " error": "")}  value={this.state.data.email} onChange={this.handleTextChange} />
+          
+            {this.state.errors.email && 
+              <ul className="form__field__error-msg">
+                {this.state.errors.email.map((message, index, array) => {
+                  return <li key={index}>{message}</li>;
+                })}
+              </ul>
+            }
+          </div>
 
-        <label>
-          Postal Code:
-          <input className={this.state.errors.postalCode ? 'error': null} type="text" name="postalCode" value={this.state.data.postalCode} onChange={this.handleTextChange} required />
-        </label>
-        {this.state.errors.postalCode && 
-          this.state.errors.postalCode.map((message, index, array) => {
-            return <span key={index}>{message}</span>;
-          })
-        }
+          <div className="form__group">
+            <label htmlFor="postalCode" className="form__label">Postal Code</label>
+            <input id="postalCode" type="text" name="postalCode" placeholder="e.g. H0H0H0" className={"form__field" + (this.state.errors.postalCode ? " error": "")} value={this.state.data.postalCode} onChange={this.handleTextChange} />
+          
+            {this.state.errors.postalCode && 
+              <ul className="form__field__error-msg">
+                {this.state.errors.postalCode.map((message, index, array) => {
+                  return <li key={index}>{message}</li>;
+                })}
+              </ul>
+            }
+          </div>
 
-        <label>
-          <input className={this.state.errors.consent ? 'error': null} type="checkbox" name="consent" value={this.state.inputs.consent.value} checked={this.state.data.consent} onChange={this.handleCheckboxChange} required /> I have read and agreed to the terms and conditions.
-        </label>
-        <input type="submit" id="signup" value={this.state.inputs.submit.value} />
-      </form>
-    );
+          <div className="form__group">
+            <label className="form__checkboxLabel">
+              <input className={"form__checkbox" + (this.state.errors.consent ? " error": "")} type="checkbox" name="consent" value={this.state.inputs.consent.value} checked={this.state.data.consent} onChange={this.handleCheckboxChange} required /> I have read and agreed to the terms and conditions.
+            </label>
+          </div>
+
+          <input className="form__submit" type="submit" id="signup" value={this.state.inputs.submit.value} />
+        </form>
+      );
+    }
   }
 }
 
