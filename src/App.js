@@ -86,7 +86,7 @@ class App extends Component {
       // async fetch to disable double submition
       fetch("https://webhook.site/bdf2b2f6-c540-4b0b-b424-2a99f5e3b66f", {
         method: "POST",
-        mode: "no-cors",
+        mode: "cors",
         body: info,
       })
       .then(function(response) {
